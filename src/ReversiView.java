@@ -119,7 +119,7 @@ public class ReversiView extends javafx.application.Application implements java.
 							controller.move(row, col, turn);
 							turn = "B";
 						}
-						
+
 						// cpu
 						if (turn == "B") {
 							while (!bValid) {
@@ -134,20 +134,16 @@ public class ReversiView extends javafx.application.Application implements java.
 						}
 					}
 				}
-
-				
-
 			}
-
 		});
-
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable model, Object move) {
 		// TODO Auto-generated method stub
+		ReversiBoard2 rb = (ReversiBoard2) move;
+		gc.setFill(rb.getColor());
+		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
 
 	}
-
 
 }
