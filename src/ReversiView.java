@@ -128,7 +128,7 @@ public class ReversiView extends javafx.application.Application implements java.
 								bValid = controller.checkValid(row, col, turn, false);
 							}
 							controller.checkValid(row, col, turn, true);
-							controller.move(r, c, turn);
+							controller.move(row, col, turn);
 							controller.printScore();
 							System.out.println("The computer places a piece at " + intToString(c) + (r + 1));
 							System.out.println();

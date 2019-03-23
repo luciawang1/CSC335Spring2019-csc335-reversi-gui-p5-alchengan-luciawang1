@@ -1,55 +1,24 @@
-import javafx.scene.paint.Color;
+import java.io.Serializable;
 
-public class ReversiBoard {
-
-	/**
-	 * row
-	 */
-	private int row;
+public class ReversiBoard implements Serializable {
+	static final long serialVersionUID = 1;
 	
-	/**
-	 * col
-	 */
-	private int col;
+	public static int WHITE = 1;
+	public static int BLACK = 2;
+	public static int BLANK = 0;
+	public static int DIM = 8;
 	
-	/**
-	 * color: white = user, black = cpu
-	 */
-	private Color color;
+	private int[][] board;
 	
-	/**
-	 * Instantiate instance variables
-	 * @param row = row where move was made
-	 * @param col = col where move was made
-	 * @param color
-	 */
-	public void set(int row, int col, Color color) {
-		this.color = color;
-		this.row = row;
-		this.col = col;
+	public ReversiBoard() {
+		board = new int[DIM][DIM];
 	}
-
-	/**
-	 * Getter for row
-	 * @return row
-	 */
-	public int getRow() {
-		return row;
+	
+	public int getAt(int row, int col) {
+		return board[row][col];
 	}
-
-	/**
-	 * Getter for column
-	 * @return column
-	 */
-	public int getCol() {
-		return col;
-	}
-
-	/**
-	 * Getter for color
-	 * @return color of the player (black cpu, white user)
-	 */
-	public Color getColor() {
-		return color;
+	
+	public void setAt(int player, int row, int col) {
+		board[row][col] = player;
 	}
 }

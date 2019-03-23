@@ -23,8 +23,8 @@ public class ReversiController {
 	 */
 	public ReversiController(ReversiModel model) {
 		this.model = model;
-		this.board = model.board;
-		this.dimension = model.DIMENSION;
+		//this.board = model.board;
+		//this.dimension = model.DIMENSION;
 		bScore = 2;
 		wScore = 2;
 
