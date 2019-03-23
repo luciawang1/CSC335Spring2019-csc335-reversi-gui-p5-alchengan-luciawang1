@@ -24,7 +24,7 @@ public class ReversiModel extends java.util.Observable {
 
 	public void setAt(String player, int row, int col) {
 		board.setAt((player == "W" ? ReversiBoard.WHITE : ReversiBoard.BLACK), row, col);
-		setChanged();
+		//setChanged();
 	}
 
 	public String getAt(int row, int col) {

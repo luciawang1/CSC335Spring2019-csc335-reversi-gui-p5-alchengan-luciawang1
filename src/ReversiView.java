@@ -104,47 +104,66 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	// given pixel, determine col/row
 	private int getRowCol(double pixel) {
-		return (int) (pixel - 10) / 25;
+		return (int) (pixel - 9) / 25;
 	}
 
 	private void play(Canvas board) {
-		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		String turn = "W";
+		
+		while(!controller.gameOver()) {
+			boolean wValid = false;
+			boolean bValid = false;
+			int row = 0;
+			int col = 0;
+			
+			// user
+			if (turn == "W") {
+				// keep letting the user click until the move is legal
+				while (!wValid) {
+					
+					board.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						
+						
+						
+						@Override
+						public void handle(MouseEvent mouse) {
+					
+					row = getRowCol(mouse.getY());
+					col = getRowCol(mouse.getX());
+					wValid = controller.checkValid(row, col, turn, false);
+				}
+				controller.checkValid(row, col, turn, true);
+				controller.move(row, col, turn);
+				turn = "B";
+			}
 
-			@Override
-			public void handle(MouseEvent mouse) {
-
-				// play game
+			
+		}
+		
+		
+				if (controller.gameOver())
+					return;
+				
+				// play
 				String turn = "W";
-				while (!controller.gameOver()) {
-					boolean wValid = false;
-					boolean bValid = false;
-					int row = 0;
-					int col = 0;
+				boolean wValid = false;
+				boolean bValid = false;
+				int row = 0;
+				int col = 0;
 
-					if (turn == "W") {
-						// keep letting the user click until the move is legal
-						while (!wValid) {
-							row = getRowCol(mouse.getY());
-							col = getRowCol(mouse.getX());
-							wValid = controller.checkValid(row, col, turn, false);
-						}
-						controller.checkValid(row, col, turn, true);
-						controller.move(row, col, turn);
-						turn = "B";
+				// user
+				
+				// cpu
+				if (turn == "B") {
+					while (!bValid) {
+						row = (int) (Math.random() * dimension);
+						col = (int) (Math.random() * dimension);
+						bValid = controller.checkValid(row, col, turn, false);
 					}
-
-					// cpu
-					if (turn == "B") {
-						while (!bValid) {
-							row = (int) (Math.random() * dimension);
-							col = (int) (Math.random() * dimension);
-							bValid = controller.checkValid(row, col, turn, false);
-						}
-						controller.checkValid(row, col, turn, true);
-						controller.move(row, col, turn);
-						controller.printScore();
-						turn = "W";
-					}
+					controller.checkValid(row, col, turn, true);
+					controller.move(row, col, turn);
+					controller.printScore();
+					turn = "W";
 				}
 			}
 		});
@@ -155,7 +174,6 @@ public class ReversiView extends javafx.application.Application implements java.
 		ReversiBoard rb = (ReversiBoard) move;
 		gc.setFill(rb.getColor());
 		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
-
 	}
 
 }
