@@ -9,10 +9,6 @@ public class ReversiBoard {
 	
 	public ReversiBoard() {
 		board = new int[DIM][DIM];
-		board[3][3] = WHITE;
-		board[4][4] = WHITE;
-		board[3][4] = BLACK;
-		board[4][3] = BLACK;
 	}
 	
 	public int getAt(int row, int col) {
