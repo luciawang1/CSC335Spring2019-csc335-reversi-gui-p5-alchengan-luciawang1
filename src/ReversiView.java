@@ -154,7 +154,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	public void update(Observable model, Object move) {
 		// TODO Auto-generated method stub
-		ReversiBoard2 rb = (ReversiBoard2) move;
+		ReversiBoard rb = (ReversiBoard) move;
 		gc.setFill(rb.getColor());
 		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
 
