@@ -12,9 +12,6 @@ public class ReversiController {
 	public int wScore;
 	String[][] board;
 	int dimension;
-	public Boolean human = true;
-	public Boolean cpu = false;
-	public Boolean blank = null;
 
 	/**
 	 * Constructor

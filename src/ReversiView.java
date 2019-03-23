@@ -6,8 +6,13 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -29,8 +34,8 @@ public class ReversiView extends javafx.application.Application implements java.
 	private GraphicsContext gc;
 
 	// 16 + 8 * 20 = 208
-	private int rowPixels = 208;
-	private int colPixels = 208;
+	private int rowPixels = 226;
+	private int colPixels = 226;
 
 	/**
 	 * Constructor
@@ -44,6 +49,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		stage.setTitle("Reversi");
 		Canvas board = new Canvas(rowPixels, colPixels);
 		gc = board.getGraphicsContext2D();
 
@@ -51,8 +57,20 @@ public class ReversiView extends javafx.application.Application implements java.
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, rowPixels, colPixels);
 
-		// set circles clear initially
-		gc.setFill(Color.TRANSPARENT);
+		// set grid
+		gc.setFill(Color.BLACK);
+		// horizontal
+		for (int y = 9; y < 226; y += 26) {
+			gc.setLineWidth(2);
+			gc.strokeLine(9, y, 217, y);
+		}
+		// vertical
+		for (int x = 9; x < 226; x += 26) {
+			gc.strokeLine(x, 9, x, 217);
+		}
+
+			// set circles clear initially
+			gc.setFill(Color.TRANSPARENT);
 		for (int i = 0; i < dimension; i++) {
 			for (int j = 0; j < dimension; j++) {
 				gc.fillOval(getPixels(i), getPixels(j), 20, 20);
@@ -76,16 +94,17 @@ public class ReversiView extends javafx.application.Application implements java.
 		Scene scene = new Scene(group);
 		stage.setScene(scene);
 		stage.show();
+
 	}
 
 	// given the row/col, calculate pixel location
 	private int getPixels(int i) {
-		return 8 + 24 * i;
+		return 12 + 26 * i;
 	}
 
 	// given pixel, determine col/row
 	private int getRowCol(double pixel) {
-		return (int) (pixel - 8) / 24;
+		return (int) pixel - 9 / 25;
 	}
 
 	private void play(Canvas board) {
