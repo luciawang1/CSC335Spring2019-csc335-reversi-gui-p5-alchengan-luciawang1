@@ -4,7 +4,7 @@
  *         In MVC: Model represents the board for reversi (8 x 8 board) where
  *         the middle pieces are already set up
  */
-public class ReversiModel {
+public class ReversiModel extends java.util.Observable {
 	public int DIMENSION = 8;
 	public String[][] board;
 
