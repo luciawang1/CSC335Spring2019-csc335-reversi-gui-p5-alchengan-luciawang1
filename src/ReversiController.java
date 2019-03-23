@@ -21,8 +21,8 @@ public class ReversiController {
 	 * 
 	 * @param ReversiModel model
 	 */
-	public ReversiController(ReversiModel model) {
-		this.model = model;
+	public ReversiController() {
+		this.model = new ReversiModel();
 		//this.board = model.board;
 		//this.dimension = model.DIMENSION;
 		bScore = 2;

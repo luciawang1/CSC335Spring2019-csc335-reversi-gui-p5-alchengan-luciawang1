@@ -28,9 +28,6 @@ public class ReversiView extends javafx.application.Application implements java.
 	// graphics context to draw board
 	private GraphicsContext gc;
 
-	// flag for game over
-	private boolean gameOver;
-
 	// 16 + 8 * 20 = 208
 	private int rowPixels = 208;
 	private int colPixels = 208;
@@ -40,10 +37,9 @@ public class ReversiView extends javafx.application.Application implements java.
 	 * 
 	 * @param ReversiModel model
 	 */
-	public ReversiView(ReversiModel model) {
-		controller = new ReversiController(model);
+	public ReversiView() {
+		controller = new ReversiController();
 		controller.model.addObserver(this);
-		gameOver = false;
 	}
 
 	@Override
@@ -80,7 +76,6 @@ public class ReversiView extends javafx.application.Application implements java.
 		Scene scene = new Scene(group);
 		stage.setScene(scene);
 		stage.show();
-
 	}
 
 	// given the row/col, calculate pixel location
