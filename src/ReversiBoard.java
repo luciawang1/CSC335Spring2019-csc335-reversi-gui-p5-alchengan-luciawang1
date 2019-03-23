@@ -1,5 +1,8 @@
+import java.io.Serializable;
 
-public class ReversiBoard {
+public class ReversiBoard implements Serializable {
+	static final long serialVersionUID = 1;
+	
 	public static int WHITE = 1;
 	public static int BLACK = 2;
 	public static int BLANK = 0;
