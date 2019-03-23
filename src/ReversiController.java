@@ -104,12 +104,31 @@ public class ReversiController {
 	 * @return true if there are no more empty pieces; false if there are no more
 	 */
 	public boolean gameOver() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++)
-				if (board[i][j] == "_")
-					return false;
+		boolean emptySpace = false;
+		
+		for(int i=0; i<ReversiBoard.DIM; i++) {
+			for(int j=0; j<ReversiBoard.DIM; j++) {
+				if(board[i][j].equals("_"))
+					emptySpace = true;
+			}
 		}
-		return true;
+		
+		if(!emptySpace)
+			return true;
+		
+		boolean validMove = false;
+		
+		for(int i=0; i<ReversiBoard.DIM; i++) {
+			for(int j=0; j<ReversiBoard.DIM; j++) {
+				if(checkValid(i, j, "W", false) || checkValid(i, j, "B", false))
+					validMove = true;
+			}
+		}
+		
+		if(!validMove)
+			return true;
+		
+		return false;
 	}
 
 	/**
