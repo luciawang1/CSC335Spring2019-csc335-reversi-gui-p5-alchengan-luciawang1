@@ -7,6 +7,11 @@ public class ReversiModel extends Observable {
 		board = new ReversiBoard();
 	}
 	
+	public void setAt(String player, int row, int col) {
+		board.setAt((player == "W" ? ReversiBoard.WHITE : ReversiBoard.BLACK), row, col);
+		setChanged();
+	}
+	
 	public String getAt(int row, int col) {
 		if(board.getAt(row, col) == ReversiBoard.WHITE)
 			return "W";
@@ -14,5 +19,9 @@ public class ReversiModel extends Observable {
 			return "B";
 		
 		return "O";
+	}
+	
+	public ReversiBoard getBoard() {
+		return board;
 	}
 }
