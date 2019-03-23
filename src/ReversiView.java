@@ -69,8 +69,8 @@ public class ReversiView extends javafx.application.Application implements java.
 			gc.strokeLine(x, 9, x, 217);
 		}
 
-			// set circles clear initially
-			gc.setFill(Color.TRANSPARENT);
+		// set circles clear initially
+		gc.setFill(Color.TRANSPARENT);
 		for (int i = 0; i < dimension; i++) {
 			for (int j = 0; j < dimension; j++) {
 				gc.fillOval(getPixels(i), getPixels(j), 20, 20);
@@ -104,7 +104,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	// given pixel, determine col/row
 	private int getRowCol(double pixel) {
-		return (int) pixel - 9 / 25;
+		return (int) (pixel - 10) / 25;
 	}
 
 	private void play(Canvas board) {
@@ -115,37 +115,35 @@ public class ReversiView extends javafx.application.Application implements java.
 
 				// play game
 				String turn = "W";
-				if (turn == "W") {
-					while (!controller.gameOver()) {
-						boolean wValid = false;
-						boolean bValid = false;
-						int row = 0;
-						int col = 0;
+				while (!controller.gameOver()) {
+					boolean wValid = false;
+					boolean bValid = false;
+					int row = 0;
+					int col = 0;
 
-						if (turn == "W") {
-							// keep letting the user click until the move is legal
-							while (!wValid) {
-								row = getRowCol(mouse.getY());
-								col = getRowCol(mouse.getX());
-								wValid = controller.checkValid(row, col, turn, false);
-							}
-							controller.checkValid(row, col, turn, true);
-							controller.move(row, col, turn);
-							turn = "B";
+					if (turn == "W") {
+						// keep letting the user click until the move is legal
+						while (!wValid) {
+							row = getRowCol(mouse.getY());
+							col = getRowCol(mouse.getX());
+							wValid = controller.checkValid(row, col, turn, false);
 						}
+						controller.checkValid(row, col, turn, true);
+						controller.move(row, col, turn);
+						turn = "B";
+					}
 
-						// cpu
-						if (turn == "B") {
-							while (!bValid) {
-								row = (int) (Math.random() * dimension);
-								col = (int) (Math.random() * dimension);
-								bValid = controller.checkValid(row, col, turn, false);
-							}
-							controller.checkValid(row, col, turn, true);
-							controller.move(row, col, turn);
-							controller.printScore();
-							turn = "W";
+					// cpu
+					if (turn == "B") {
+						while (!bValid) {
+							row = (int) (Math.random() * dimension);
+							col = (int) (Math.random() * dimension);
+							bValid = controller.checkValid(row, col, turn, false);
 						}
+						controller.checkValid(row, col, turn, true);
+						controller.move(row, col, turn);
+						controller.printScore();
+						turn = "W";
 					}
 				}
 			}

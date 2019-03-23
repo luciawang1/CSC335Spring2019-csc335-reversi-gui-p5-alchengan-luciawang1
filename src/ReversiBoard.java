@@ -12,13 +12,7 @@ public class ReversiBoard implements Serializable {
 
 	private int[][] board;
 
-	public ReversiBoard() {
-		board = new int[DIM][DIM];
-	}
 
-	public int getAt(int row, int col) {
-		return board[row][col];
-	}
 
 	public void setAt(int player, int row, int col) {
 		board[row][col] = player;

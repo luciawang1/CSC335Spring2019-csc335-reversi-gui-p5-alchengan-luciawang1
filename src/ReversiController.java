@@ -1,3 +1,4 @@
+import javafx.scene.paint.Color;
 
 /**
  * @author Lucia Wang
@@ -20,8 +21,8 @@ public class ReversiController {
 	 */
 	public ReversiController() {
 		this.model = new ReversiModel();
-		//this.board = model.board;
-		//this.dimension = model.DIMENSION;
+		this.board = model.getStringBoard();
+		// this.dimension = model.DIMENSION;
 		bScore = 2;
 		wScore = 2;
 
@@ -162,6 +163,10 @@ public class ReversiController {
 									for (int d2 = 1; d2 < d; d2++) {
 										int rFlip = row + d2 * dX;
 										int cFlip = col + d2 * dY;
+										if (player == "W")
+											model.setBoard(rFlip, cFlip, Color.WHITE);
+										if (player == "B")
+											model.setBoard(rFlip, cFlip, Color.BLACK);
 										board[rFlip][cFlip] = player;
 									}
 								}
