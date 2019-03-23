@@ -18,4 +18,8 @@ public class ReversiBoard {
 	public int getAt(int row, int col) {
 		return board[row][col];
 	}
+	
+	public void setAt(int player, int row, int col) {
+		board[row][col] = player;
+	}
 }
