@@ -205,4 +205,21 @@ public class ReversiController {
 		return isValid;
 	}
 
+	/**
+	 * checks to see if the player has valid moves
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean hasValidMoves(String player) {
+		for (int i = 0; i < dimension; i++) {
+			for (int j = 0; j < dimension; j++) {
+				if (model.getAt(i, j) == "_")
+					if (checkValid(i, j, player, false))
+						return true;
+			}
+		}
+		return false;
+	}
+
 }
