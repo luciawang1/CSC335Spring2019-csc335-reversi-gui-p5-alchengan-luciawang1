@@ -46,6 +46,10 @@ public class ReversiController {
 		wScore = 2;
 
 	}
+	
+	public ReversiModel getModel() {
+		return model;
+	}
 
 	/**
 	 * Returns physical representation of board as String

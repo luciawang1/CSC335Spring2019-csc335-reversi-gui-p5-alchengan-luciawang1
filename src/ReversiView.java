@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Observable;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -5,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -13,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * @author Lucia Wang
@@ -96,7 +100,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		gc.fillOval(getPixels(4), getPixels(3), 20, 20);
 
 		// lets user move
-		play(board, score);
+		play(board, score, stage);
 
 		window.setTop(menuBar);
 		window.setCenter(board);
@@ -121,7 +125,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		return (int) (pixel - 9) / 26;
 	}
 
-	private void play(Canvas board, Label score) {
+	private void play(Canvas board, Label score, Stage stage) {
 
 		// set on mouse clicked
 		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -180,7 +184,25 @@ public class ReversiView extends javafx.application.Application implements java.
 				}
 			}
 		});
-
+		
+		//clicking exit
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent wc) {
+				try {
+					FileOutputStream save = new FileOutputStream("save_game.dat");
+					ObjectOutputStream out = new ObjectOutputStream(save);
+					out.writeObject(controller.getModel().getBoard());
+					out.close();
+					save.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 	}
 
 	public void update(Observable model, Object move) {
