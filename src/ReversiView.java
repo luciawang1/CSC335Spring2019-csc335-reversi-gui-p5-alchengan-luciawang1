@@ -126,8 +126,8 @@ public class ReversiView extends javafx.application.Application implements java.
 				if (turn == "W") {
 					// keep letting the user click until the move is legal
 					while (!wValid) {
-						row = getRowCol(mouse.getY());
-						col = getRowCol(mouse.getX());
+						row = getRowCol(mouse.getX());
+						col = getRowCol(mouse.getY());
 						wValid = controller.checkValid(row, col, turn, false);
 					}
 					controller.checkValid(row, col, turn, true);
@@ -144,7 +144,6 @@ public class ReversiView extends javafx.application.Application implements java.
 					}
 					controller.checkValid(row, col, turn, true);
 					controller.move(row, col, turn);
-					controller.printScore();
 					turn = "W";
 				}
 			}
