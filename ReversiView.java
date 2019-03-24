@@ -8,11 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
@@ -54,17 +50,6 @@ public class ReversiView extends javafx.application.Application implements java.
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Reversi");
-		BorderPane window = new BorderPane();
-		
-		MenuBar menuBar = new MenuBar();
-		Menu menuFile = new Menu("File");
-		MenuItem newGame = new MenuItem("New Game");
-		
-		menuFile.getItems().add(newGame);
-		menuBar.getMenus().add(menuFile);
-		
-		Label score = new Label(scoreString());
-		
 		Canvas board = new Canvas(rowPixels, colPixels);
 		gc = board.getGraphicsContext2D();
 
@@ -102,14 +87,10 @@ public class ReversiView extends javafx.application.Application implements java.
 
 		// lets user move
 		play(board);
-		
-		window.setTop(menuBar);
-		window.setCenter(board);
-		window.setBottom(score);
 
 		// display board
 		Group group = new Group();
-		group.getChildren().add(window);
+		group.getChildren().add(board);
 		Scene scene = new Scene(group);
 		stage.setScene(scene);
 		stage.show();
@@ -175,16 +156,6 @@ public class ReversiView extends javafx.application.Application implements java.
 		ReversiBoard rb = (ReversiBoard) move;
 		gc.setFill(rb.getColor());
 		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
-	}
-	
-	private String scoreString() {
-		StringBuilder scoreSB = new StringBuilder();
-		scoreSB.append("White: ");
-		scoreSB.append(controller.getWScore());
-		scoreSB.append(" - Black: ");
-		scoreSB.append(controller.getBScore());
-		
-		return scoreSB.toString();
 	}
 
 }
