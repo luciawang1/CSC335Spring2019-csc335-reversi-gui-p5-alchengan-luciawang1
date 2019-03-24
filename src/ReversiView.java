@@ -37,9 +37,9 @@ public class ReversiView extends javafx.application.Application implements java.
 	// graphics context to draw board
 	private GraphicsContext gc;
 
-	// 16 + 8 * 20 = 208
-	private int rowPixels = 226;
-	private int colPixels = 226;
+	// 46 * 8 + 16
+	private int rowPixels = 384;
+	private int colPixels = 384;
 
 	/**
 	 * Constructor
@@ -60,7 +60,19 @@ public class ReversiView extends javafx.application.Application implements java.
 		Menu menuFile = new Menu("File");
 		Label l = new Label("New Game");
 		MenuItem newGame = new CustomMenuItem(l);
-		//l.setOnMouseClicked(value);
+		l.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent mouse) {
+				Stage stage2 = new Stage();
+				try {
+					start(stage2);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("can't restart");
+				}
+			}
+		});
 
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
@@ -77,30 +89,30 @@ public class ReversiView extends javafx.application.Application implements java.
 		// set grid
 		gc.setFill(Color.BLACK);
 		// horizontal
-		for (int y = 9; y < 226; y += 26) {
+		for (int y = 9; y < rowPixels; y += 46) {
 			gc.setLineWidth(2);
-			gc.strokeLine(9, y, 217, y);
+			gc.strokeLine(9, y, 377, y);
 		}
 		// vertical
-		for (int x = 9; x < 226; x += 26) {
-			gc.strokeLine(x, 9, x, 217);
+		for (int x = 9; x < colPixels; x += 46) {
+			gc.strokeLine(x, 9, x, 377);
 		}
 
 		// set circles clear initially
 		gc.setFill(Color.TRANSPARENT);
 		for (int i = 0; i < dimension; i++) {
 			for (int j = 0; j < dimension; j++) {
-				gc.fillOval(getPixels(i), getPixels(j), 20, 20);
+				gc.fillOval(getPixels(i), getPixels(j), 40, 40);
 			}
 		}
 
 		// set the 4 in the center the colors they are supposed to be
 		gc.setFill(Color.WHITE);
-		gc.fillOval(getPixels(3), getPixels(3), 20, 20);
-		gc.fillOval(getPixels(4), getPixels(4), 20, 20);
+		gc.fillOval(getPixels(3), getPixels(3), 40, 40);
+		gc.fillOval(getPixels(4), getPixels(4), 40, 40);
 		gc.setFill(Color.BLACK);
-		gc.fillOval(getPixels(3), getPixels(4), 20, 20);
-		gc.fillOval(getPixels(4), getPixels(3), 20, 20);
+		gc.fillOval(getPixels(3), getPixels(4), 40, 40);
+		gc.fillOval(getPixels(4), getPixels(3), 40, 40);
 
 		// lets user move
 		play(board, score, stage);
@@ -120,12 +132,12 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	// given the row/col, calculate pixel location
 	private int getPixels(int i) {
-		return 12 + 26 * i;
+		return 12 + 46 * i;
 	}
 
 	// given pixel, determine col/row
 	private int getRowCol(double pixel) {
-		return (int) (pixel - 9) / 26;
+		return (int) (pixel - 9) / 46;
 	}
 
 	private void play(Canvas board, Label score, Stage stage) {
@@ -148,7 +160,6 @@ public class ReversiView extends javafx.application.Application implements java.
 				int col = 0;
 
 				// user
-
 				if (turn == "W" && controller.hasValidMoves("W")) {
 					// keep letting the user click until the move is legal
 					row = getRowCol(mouse.getX());
@@ -160,7 +171,6 @@ public class ReversiView extends javafx.application.Application implements java.
 							turn = "B";
 						}
 					}
-
 				}
 				score.setText(scoreString());
 				if (!controller.hasValidMoves("W") && !controller.hasValidMoves("B")) { // return if game over
@@ -187,8 +197,8 @@ public class ReversiView extends javafx.application.Application implements java.
 				}
 			}
 		});
-		
-		//clicking exit
+
+		// clicking exit
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent wc) {
@@ -205,7 +215,6 @@ public class ReversiView extends javafx.application.Application implements java.
 				}
 			}
 		});
-		
 	}
 
 	public void update(Observable model, Object oBoard) {
