@@ -1,22 +1,16 @@
 import java.util.Observable;
-import java.util.Scanner;
-
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -55,16 +49,16 @@ public class ReversiView extends javafx.application.Application implements java.
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Reversi");
 		BorderPane window = new BorderPane();
-		
+
 		MenuBar menuBar = new MenuBar();
 		Menu menuFile = new Menu("File");
 		MenuItem newGame = new MenuItem("New Game");
-		
+
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
-		
+
 		Label score = new Label(scoreString());
-		
+
 		Canvas board = new Canvas(rowPixels, colPixels);
 		gc = board.getGraphicsContext2D();
 
@@ -102,7 +96,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 		// lets user move
 		play(board);
-		
+
 		window.setTop(menuBar);
 		window.setCenter(board);
 		window.setBottom(score);
@@ -123,7 +117,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	// given pixel, determine col/row
 	private int getRowCol(double pixel) {
-		return (int) (pixel - 9) / 25;
+		return (int) (pixel - 9) / 26;
 	}
 
 	private void play(Canvas board) {
@@ -144,14 +138,15 @@ public class ReversiView extends javafx.application.Application implements java.
 				// user
 				if (turn == "W") {
 					// keep letting the user click until the move is legal
-					while (!wValid) {
-						row = getRowCol(mouse.getX());
-						col = getRowCol(mouse.getY());
-						wValid = controller.checkValid(row, col, turn, false);
+					row = getRowCol(mouse.getX());
+					col = getRowCol(mouse.getY());
+					if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+						if (controller.checkValid(row, col, turn, false)) {
+							controller.checkValid(row, col, turn, true);
+							controller.move(row, col, turn);
+							turn = "B";
+						}
 					}
-					controller.checkValid(row, col, turn, true);
-					controller.move(row, col, turn);
-					turn = "B";
 				}
 
 				// cpu
@@ -171,19 +166,18 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	public void update(Observable model, Object move) {
-		// TODO Auto-generated method stub
 		ReversiBoard rb = (ReversiBoard) move;
 		gc.setFill(rb.getColor());
 		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
 	}
-	
+
 	private String scoreString() {
 		StringBuilder scoreSB = new StringBuilder();
 		scoreSB.append("White: ");
 		scoreSB.append(controller.getWScore());
 		scoreSB.append(" - Black: ");
 		scoreSB.append(controller.getBScore());
-		
+
 		return scoreSB.toString();
 	}
 
