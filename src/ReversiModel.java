@@ -2,7 +2,7 @@ import java.util.Observable;
 
 import javafx.scene.paint.Color;
 
-public class ReversiModel extends java.util.Observable {
+public class ReversiModel extends Observable {
 	private ReversiBoard board;
 	private String[][] stringBoard;
 
@@ -21,10 +21,21 @@ public class ReversiModel extends java.util.Observable {
 		stringBoard[4][4] = "W";
 		stringBoard[4][3] = "B";
 	}
-
-	public void setAt(String player, int row, int col) {
-		board.setAt((player == "W" ? ReversiBoard.WHITE : ReversiBoard.BLACK), row, col);
-		//setChanged();
+	
+	public ReversiModel(ReversiBoard board) {
+		this.board = board;
+		
+		stringBoard = new String[dimension][dimension];
+		for(int i=0; i < stringBoard.length; i++) {
+			for(int j=0; j < stringBoard.length; j++) {
+				if(this.board.getAt(i,j) == ReversiBoard.BLANK)
+					stringBoard[i][j] = "_";
+				else if(this.board.getAt(i, j) == ReversiBoard.WHITE)
+					stringBoard[i][j] = "W";
+				else if(this.board.getAt(i,j) == ReversiBoard.BLACK)
+					stringBoard[i][j] = "B";
+			}
+		}
 	}
 
 	public String getAt(int row, int col) {
@@ -52,6 +63,8 @@ public class ReversiModel extends java.util.Observable {
 	 * @param color
 	 */
 	public void setBoard(int row, int col, Color color) {
+		int player = (color.equals(Color.WHITE) ? ReversiBoard.WHITE : ReversiBoard.BLACK );
+		board.setAt(row, col, player);
 		board.set(row, col, color);
 		setChanged();
 		notifyObservers(board);
