@@ -208,10 +208,22 @@ public class ReversiView extends javafx.application.Application implements java.
 		
 	}
 
-	public void update(Observable model, Object move) {
-		ReversiBoard rb = (ReversiBoard) move;
-		gc.setFill(rb.getColor());
-		gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
+	public void update(Observable model, Object oBoard) {
+		ReversiBoard rb = (ReversiBoard) oBoard;
+		for(int i=0; i<ReversiBoard.DIM; i++) {
+			for(int j=0; j<ReversiBoard.DIM; j++) {
+				if(rb.getAt(i, j) == ReversiBoard.BLANK)
+					gc.setFill(Color.TRANSPARENT);
+				else if(rb.getAt(i, j) == ReversiBoard.WHITE)
+					gc.setFill(Color.WHITE);
+				else if(rb.getAt(i, j) == ReversiBoard.BLACK)
+					gc.setFill(Color.BLACK);
+				
+				gc.fillOval(this.getPixels(i), this.getPixels(j), 20, 20);
+			}
+		}
+		//gc.setFill(rb.getColor());
+		//gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
 	}
 
 	private String scoreString() {

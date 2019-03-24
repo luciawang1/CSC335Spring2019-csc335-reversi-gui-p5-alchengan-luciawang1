@@ -65,7 +65,6 @@ public class ReversiModel extends Observable {
 	public void setBoard(int row, int col, Color color) {
 		int player = (color.equals(Color.WHITE) ? ReversiBoard.WHITE : ReversiBoard.BLACK );
 		board.setAt(row, col, player);
-		board.set(row, col, color);
 		setChanged();
 		notifyObservers(board);
 	}
