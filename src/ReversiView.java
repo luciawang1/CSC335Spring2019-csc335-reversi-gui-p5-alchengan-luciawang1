@@ -145,9 +145,8 @@ public class ReversiView extends javafx.application.Application implements java.
 				int col = 0;
 
 				// user
-				if (!controller.hasValidMoves("W"))
-					turn = "B";
-				if (turn == "W") {
+
+				if (turn == "W" && controller.hasValidMoves("W")) {
 					// keep letting the user click until the move is legal
 					row = getRowCol(mouse.getX());
 					col = getRowCol(mouse.getY());
@@ -155,10 +154,11 @@ public class ReversiView extends javafx.application.Application implements java.
 						if (controller.checkValid(row, col, turn, false)) {
 							controller.checkValid(row, col, turn, true);
 							controller.move(row, col, turn);
+							turn = "B";
 						}
 					}
+
 				}
-				turn = "B";
 				score.setText(scoreString());
 				if (!controller.hasValidMoves("W") && !controller.hasValidMoves("B")) { // return if game over
 					gameOver();
@@ -220,7 +220,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 		return scoreSB.toString();
 	}
-	
+
 	private void gameOver() {
 		if (controller.getBScore() > controller.getWScore())
 			new Alert(Alert.AlertType.INFORMATION, "You lose :(").showAndWait();
@@ -229,6 +229,5 @@ public class ReversiView extends javafx.application.Application implements java.
 		else
 			new Alert(Alert.AlertType.INFORMATION, "It's a tie!").showAndWait();
 	}
-
 
 }
