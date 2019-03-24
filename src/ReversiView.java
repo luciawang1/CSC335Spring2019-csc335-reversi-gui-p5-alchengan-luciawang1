@@ -8,6 +8,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -53,6 +56,13 @@ public class ReversiView extends javafx.application.Application implements java.
 		stage.setTitle("Reversi");
 		BorderPane window = new BorderPane();
 		
+		MenuBar menuBar = new MenuBar();
+		Menu menuFile = new Menu("File");
+		MenuItem newGame = new MenuItem("New Game");
+		
+		menuFile.getItems().add(newGame);
+		menuBar.getMenus().add(menuFile);
+		
 		Label score = new Label(scoreString());
 		
 		Canvas board = new Canvas(rowPixels, colPixels);
@@ -93,6 +103,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		// lets user move
 		play(board);
 		
+		window.setTop(menuBar);
 		window.setCenter(board);
 		window.setBottom(score);
 
