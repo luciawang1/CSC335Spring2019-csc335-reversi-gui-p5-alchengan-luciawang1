@@ -16,6 +16,12 @@ public class ReversiModel extends Observable {
 				stringBoard[i][j] = "_";
 			}
 		}
+		
+		board.setAt(3, 3, ReversiBoard.WHITE);
+		board.setAt(3, 4, ReversiBoard.BLACK);
+		board.setAt(4, 4, ReversiBoard.WHITE);
+		board.setAt(4, 3, ReversiBoard.BLACK);
+		
 		stringBoard[3][3] = "W";
 		stringBoard[3][4] = "B";
 		stringBoard[4][4] = "W";
