@@ -95,7 +95,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		gc.fillOval(getPixels(4), getPixels(3), 20, 20);
 
 		// lets user move
-		play(board);
+		play(board, score);
 
 		window.setTop(menuBar);
 		window.setCenter(board);
@@ -120,7 +120,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		return (int) (pixel - 9) / 26;
 	}
 
-	private void play(Canvas board) {
+	private void play(Canvas board, Label score) {
 		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -148,7 +148,7 @@ public class ReversiView extends javafx.application.Application implements java.
 						}
 					}
 				}
-
+				score.setText(scoreString());
 				// cpu
 				if (turn == "B") {
 					while (!bValid) {
@@ -160,6 +160,7 @@ public class ReversiView extends javafx.application.Application implements java.
 					controller.move(row, col, turn);
 					turn = "W";
 				}
+				score.setText(scoreString());
 			}
 		});
 
