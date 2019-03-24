@@ -7,8 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -219,20 +217,21 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	public void update(Observable model, Object oBoard) {
 		ReversiBoard rb = (ReversiBoard) oBoard;
-		for(int i=0; i<ReversiBoard.DIM; i++) {
-			for(int j=0; j<ReversiBoard.DIM; j++) {
-				if(rb.getAt(i, j) == ReversiBoard.BLANK)
+		for (int i = 0; i < ReversiBoard.DIM; i++) {
+			for (int j = 0; j < ReversiBoard.DIM; j++) {
+				if (rb.getAt(i, j) == ReversiBoard.BLANK)
 					gc.setFill(Color.TRANSPARENT);
-				else if(rb.getAt(i, j) == ReversiBoard.WHITE)
+				else if (rb.getAt(i, j) == ReversiBoard.WHITE)
 					gc.setFill(Color.WHITE);
-				else if(rb.getAt(i, j) == ReversiBoard.BLACK)
+				else if (rb.getAt(i, j) == ReversiBoard.BLACK)
 					gc.setFill(Color.BLACK);
-				
-				gc.fillOval(this.getPixels(i), this.getPixels(j), 20, 20);
+
+				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
-		//gc.setFill(rb.getColor());
-		//gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20, 20);
+		// gc.setFill(rb.getColor());
+		// gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20,
+		// 20);
 	}
 
 	private String scoreString() {
