@@ -1,3 +1,5 @@
+import java.io.*;
+
 import javafx.scene.paint.Color;
 
 /**
@@ -13,6 +15,7 @@ public class ReversiController {
 	public int wScore;
 	String[][] board;
 	int dimension;
+	FileInputStream load;
 
 	/**
 	 * Constructor
@@ -20,12 +23,32 @@ public class ReversiController {
 	 * @param ReversiModel model
 	 */
 	public ReversiController() {
-		this.model = new ReversiModel();
+		try {
+			load = new FileInputStream("save_game.dat");
+			ObjectInputStream in = new ObjectInputStream(load);
+			ReversiBoard b = (ReversiBoard) in.readObject();
+			this.model = new ReversiModel(b);
+			in.close();
+			load.close();
+		} catch(FileNotFoundException fnfe) {
+			this.model = new ReversiModel();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+			return;
+		} catch(ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+			return;
+		}
+		
 		this.board = model.getStringBoard();
 		this.dimension = model.getDimension();
 		bScore = 2;
 		wScore = 2;
 
+	}
+	
+	public ReversiModel getModel() {
+		return model;
 	}
 
 	/**
