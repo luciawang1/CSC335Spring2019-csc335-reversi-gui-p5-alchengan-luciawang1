@@ -22,7 +22,7 @@ public class ReversiController {
 	public ReversiController() {
 		this.model = new ReversiModel();
 		this.board = model.getStringBoard();
-		// this.dimension = model.DIMENSION;
+		this.dimension = model.getDimension();
 		bScore = 2;
 		wScore = 2;
 
@@ -95,6 +95,10 @@ public class ReversiController {
 	 * @param player: String, "W" or "B"
 	 */
 	public void move(int row, int col, String player) {
+		if (player == "W")
+			model.setBoard(row, col, Color.WHITE);
+		if (player == "B")
+			model.setBoard(row, col, Color.BLACK);
 		board[row][col] = player;
 	}
 
@@ -104,30 +108,31 @@ public class ReversiController {
 	 * @return true if there are no more empty pieces; false if there are no more
 	 */
 	public boolean gameOver() {
+
 		boolean emptySpace = false;
-		
-		for(int i=0; i<ReversiBoard.DIM; i++) {
-			for(int j=0; j<ReversiBoard.DIM; j++) {
-				if(board[i][j].equals("_"))
+
+		for (int i = 0; i < ReversiBoard.DIM; i++) {
+			for (int j = 0; j < ReversiBoard.DIM; j++) {
+				if (board[i][j] == "_")
 					emptySpace = true;
 			}
 		}
-		
-		if(!emptySpace)
+
+		if (!emptySpace)
 			return true;
-		
+
 		boolean validMove = false;
-		
-		for(int i=0; i<ReversiBoard.DIM; i++) {
-			for(int j=0; j<ReversiBoard.DIM; j++) {
-				if(checkValid(i, j, "W", false) || checkValid(i, j, "B", false))
+
+		for (int i = 0; i < ReversiBoard.DIM; i++) {
+			for (int j = 0; j < ReversiBoard.DIM; j++) {
+				if (checkValid(i, j, "W", false) || checkValid(i, j, "B", false))
 					validMove = true;
 			}
 		}
-		
-		if(!validMove)
+
+		if (!validMove)
 			return true;
-		
+
 		return false;
 	}
 

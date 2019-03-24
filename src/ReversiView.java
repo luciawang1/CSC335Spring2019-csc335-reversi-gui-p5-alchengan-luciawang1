@@ -108,42 +108,13 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	private void play(Canvas board) {
-		String turn = "W";
-		
-		while(!controller.gameOver()) {
-			boolean wValid = false;
-			boolean bValid = false;
-			int row = 0;
-			int col = 0;
-			
-			// user
-			if (turn == "W") {
-				// keep letting the user click until the move is legal
-				while (!wValid) {
-					
-					board.setOnMouseClicked(new EventHandler<MouseEvent>() {
-						
-						
-						
-						@Override
-						public void handle(MouseEvent mouse) {
-					
-					row = getRowCol(mouse.getY());
-					col = getRowCol(mouse.getX());
-					wValid = controller.checkValid(row, col, turn, false);
-				}
-				controller.checkValid(row, col, turn, true);
-				controller.move(row, col, turn);
-				turn = "B";
-			}
+		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-			
-		}
-		
-		
+			@Override
+			public void handle(MouseEvent mouse) {
 				if (controller.gameOver())
 					return;
-				
+
 				// play
 				String turn = "W";
 				boolean wValid = false;
@@ -152,7 +123,18 @@ public class ReversiView extends javafx.application.Application implements java.
 				int col = 0;
 
 				// user
-				
+				if (turn == "W") {
+					// keep letting the user click until the move is legal
+					while (!wValid) {
+						row = getRowCol(mouse.getY());
+						col = getRowCol(mouse.getX());
+						wValid = controller.checkValid(row, col, turn, false);
+					}
+					controller.checkValid(row, col, turn, true);
+					controller.move(row, col, turn);
+					turn = "B";
+				}
+
 				// cpu
 				if (turn == "B") {
 					while (!bValid) {
@@ -167,6 +149,7 @@ public class ReversiView extends javafx.application.Application implements java.
 				}
 			}
 		});
+
 	}
 
 	public void update(Observable model, Object move) {
