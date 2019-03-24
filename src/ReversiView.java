@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -53,7 +54,9 @@ public class ReversiView extends javafx.application.Application implements java.
 
 		MenuBar menuBar = new MenuBar();
 		Menu menuFile = new Menu("File");
-		MenuItem newGame = new MenuItem("New Game");
+		Label l = new Label("New Game");
+		MenuItem newGame = new CustomMenuItem(l);
+		//l.setOnMouseClicked(value);
 
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
