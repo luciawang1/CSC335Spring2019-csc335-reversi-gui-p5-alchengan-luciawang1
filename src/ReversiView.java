@@ -53,27 +53,13 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		ReversiBoard rb = controller.getModel().getBoard();
 		stage.setTitle("Reversi");
 		BorderPane window = new BorderPane();
 
 		MenuBar menuBar = new MenuBar();
 		Menu menuFile = new Menu("File");
-		Label l = new Label("New Game");
-		MenuItem newGame = new CustomMenuItem(l);
-		l.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent mouse) {
-				Stage stage2 = new Stage();
-				try {
-					start(stage2);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					System.out.println("can't restart");
-				}
-			}
-		});
+		Label label = new Label("New Game");
+		MenuItem newGame = new CustomMenuItem(label);
 
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
@@ -83,6 +69,24 @@ public class ReversiView extends javafx.application.Application implements java.
 		Canvas board = new Canvas(rowPixels, colPixels);
 		gc = board.getGraphicsContext2D();
 
+		reset(board, score, stage, label);
+
+		// lets user move
+
+		window.setTop(menuBar);
+		window.setCenter(board);
+		window.setBottom(score);
+
+		// display board
+		Group group = new Group();
+		group.getChildren().add(window);
+		Scene scene = new Scene(group);
+		stage.setScene(scene);
+		stage.show();
+
+	}
+
+	private void reset(Canvas board, Label score, Stage stage, Label label) {
 		// set background green
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, rowPixels, colPixels);
@@ -107,34 +111,23 @@ public class ReversiView extends javafx.application.Application implements java.
 			}
 		}
 
+		ReversiBoard rb = controller.getModel().getBoard();
 		// set colors based on the board
-		for(int i=0; i<ReversiBoard.DIM; i++) {
-			for(int j=0; j<ReversiBoard.DIM; j++) {
-				if(rb.getAt(i, j) == ReversiBoard.BLANK)
+		for (int i = 0; i < ReversiBoard.DIM; i++) {
+			for (int j = 0; j < ReversiBoard.DIM; j++) {
+				if (rb.getAt(i, j) == ReversiBoard.BLANK)
 					gc.setFill(Color.TRANSPARENT);
-				else if(rb.getAt(i, j) == ReversiBoard.WHITE)
+				else if (rb.getAt(i, j) == ReversiBoard.WHITE)
 					gc.setFill(Color.WHITE);
-				else if(rb.getAt(i, j) == ReversiBoard.BLACK)
+				else if (rb.getAt(i, j) == ReversiBoard.BLACK)
 					gc.setFill(Color.BLACK);
-			
+
 				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
 
-		// lets user move
-		play(board, score, stage);
-
-		window.setTop(menuBar);
-		window.setCenter(board);
-		window.setBottom(score);
-
-		// display board
-		Group group = new Group();
-		group.getChildren().add(window);
-		Scene scene = new Scene(group);
-		stage.setScene(scene);
-		stage.show();
-
+		play(board, score, stage, label);
+		
 	}
 
 	// given the row/col, calculate pixel location
@@ -147,7 +140,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		return (int) (pixel - 9) / 46;
 	}
 
-	private void play(Canvas board, Label score, Stage stage) {
+	private void play(Canvas board, Label score, Stage stage, Label label) {
 
 		// set on mouse clicked
 		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -220,6 +213,30 @@ public class ReversiView extends javafx.application.Application implements java.
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+
+		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				try {
+					File file = new File("save_game.dat");
+					file.delete();
+					// start(new Stage());
+
+					// controller.model.setBoard(0, 0, Color.TRANSPARENT);
+
+					// launch();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				controller.model = new ReversiModel();
+
+				update(controller.model, controller.model.getBoard());
+				reset(board, score, stage, label);
 			}
 		});
 	}
