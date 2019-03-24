@@ -53,6 +53,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		ReversiBoard rb = controller.getModel().getBoard();
 		stage.setTitle("Reversi");
 		BorderPane window = new BorderPane();
 
@@ -106,13 +107,19 @@ public class ReversiView extends javafx.application.Application implements java.
 			}
 		}
 
-		// set the 4 in the center the colors they are supposed to be
-		gc.setFill(Color.WHITE);
-		gc.fillOval(getPixels(3), getPixels(3), 40, 40);
-		gc.fillOval(getPixels(4), getPixels(4), 40, 40);
-		gc.setFill(Color.BLACK);
-		gc.fillOval(getPixels(3), getPixels(4), 40, 40);
-		gc.fillOval(getPixels(4), getPixels(3), 40, 40);
+		// set colors based on the board
+		for(int i=0; i<ReversiBoard.DIM; i++) {
+			for(int j=0; j<ReversiBoard.DIM; j++) {
+				if(rb.getAt(i, j) == ReversiBoard.BLANK)
+					gc.setFill(Color.TRANSPARENT);
+				else if(rb.getAt(i, j) == ReversiBoard.WHITE)
+					gc.setFill(Color.WHITE);
+				else if(rb.getAt(i, j) == ReversiBoard.BLACK)
+					gc.setFill(Color.BLACK);
+			
+				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
+			}
+		}
 
 		// lets user move
 		play(board, score, stage);
