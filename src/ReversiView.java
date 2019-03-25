@@ -20,11 +20,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * @author Lucia Wang
- * 
- *         In MVC: View represents the actual play of the game, such as
+ * 		   In MVC: View represents the actual play of the game, such as
  *         switching between 2 players and keeping track of whether the game is
  *         over or not
+ * 
+ * @author Lucia Wang, Alan Cheng
+ *        
  */
 public class ReversiView extends javafx.application.Application implements java.util.Observer {
 
@@ -36,6 +37,7 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	// graphics context to draw board
 	private GraphicsContext gc;
+	private Label score;
 
 	// 46 * 8 + 16
 	private int rowPixels = 384;
@@ -64,12 +66,13 @@ public class ReversiView extends javafx.application.Application implements java.
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
 
-		Label score = new Label(scoreString());
+		score = new Label(scoreString());
 
 		Canvas board = new Canvas(rowPixels, colPixels);
 		gc = board.getGraphicsContext2D();
 
-		reset(board, score, stage, label);
+		reset(board, stage, label);
+		play(board, stage, label);
 
 		// lets user move
 
@@ -86,7 +89,8 @@ public class ReversiView extends javafx.application.Application implements java.
 
 	}
 
-	private void reset(Canvas board, Label score, Stage stage, Label label) {
+	private void reset(Canvas board, Stage stage, Label label) {
+		//controller.model.addObserver(this);
 		// set background green
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, rowPixels, colPixels);
@@ -125,8 +129,10 @@ public class ReversiView extends javafx.application.Application implements java.
 				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
+		
+		score.setText(scoreString());
 
-		play(board, score, stage, label);
+		//play(board, score, stage, label);
 		
 	}
 
@@ -140,7 +146,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		return (int) (pixel - 9) / 46;
 	}
 
-	private void play(Canvas board, Label score, Stage stage, Label label) {
+	private void play(Canvas board, Stage stage, Label label) {
 
 		// set on mouse clicked
 		board.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -233,12 +239,18 @@ public class ReversiView extends javafx.application.Application implements java.
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				controller.model = new ReversiModel();
+				newGame();
 
+				reset(board, stage, label);
 				update(controller.model, controller.model.getBoard());
-				reset(board, score, stage, label);
 			}
 		});
+	}
+	
+	private void newGame() {
+		controller.model = new ReversiModel();
+		controller.model.addObserver(this);
+		controller.resetBoard();
 	}
 
 	public void update(Observable model, Object oBoard) {
@@ -255,9 +267,8 @@ public class ReversiView extends javafx.application.Application implements java.
 				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
-		// gc.setFill(rb.getColor());
-		// gc.fillOval(this.getPixels(rb.getRow()), this.getPixels(rb.getCol()), 20,
-		// 20);
+		
+		score.setText(scoreString());
 	}
 
 	private String scoreString() {
