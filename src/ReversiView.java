@@ -122,7 +122,6 @@ public class ReversiView extends javafx.application.Application implements java.
 		for (int x = 9; x < colPixels; x += 46) {
 			gc.strokeLine(x, 9, x, 377);
 		}
-
 		// set circles clear initially
 		gc.setFill(Color.TRANSPARENT);
 		for (int i = 0; i < dimension; i++) {
