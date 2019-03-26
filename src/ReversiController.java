@@ -3,10 +3,11 @@ import java.io.*;
 import javafx.scene.paint.Color;
 
 /**
- * @author Lucia Wang
+ * In MVC: Controller handles how the game works, such as if the move is valid
+ * or not, if the game is over or not, and the scores
  * 
- *         In MVC: Controller handles how the game works, such as if the move is
- *         valid or not, if the game is over or not, and the scores
+ * @author Lucia Wang, Alan Cheng
+ * 
  */
 public class ReversiController {
 
@@ -30,25 +31,29 @@ public class ReversiController {
 			this.model = new ReversiModel(b);
 			in.close();
 			load.close();
-		} catch(FileNotFoundException fnfe) {
+		} catch (FileNotFoundException fnfe) {
 			this.model = new ReversiModel();
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			return;
-		} catch(ClassNotFoundException cnfe) {
+		} catch (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
 			return;
 		}
-		
+
 		this.board = model.getStringBoard();
 		this.dimension = model.getDimension();
 		bScore = 2;
 		wScore = 2;
 
 	}
-	
+
 	public ReversiModel getModel() {
 		return model;
+	}
+
+	public void resetBoard() {
+		board = model.getStringBoard();
 	}
 
 	/**
