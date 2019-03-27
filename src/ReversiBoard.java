@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 public class ReversiBoard implements Serializable {
-	static final long serialVersionUID = 1;
+	static final long serialVersionUID = 1L;
 
 	public static int WHITE = 1;
 	public static int BLACK = 2;
@@ -21,31 +21,4 @@ public class ReversiBoard implements Serializable {
 	public int getAt(int row, int col) {
 		return board[row][col];
 	}
-
-	/**
-	 * Getter for row
-	 * 
-	 * @return row
-	 */
-	/*public int getRow() {
-		return row;
-	}*/
-
-	/**
-	 * Getter for column
-	 * 
-	 * @return column
-	 */
-	/*public int getCol() {
-		return col;
-	}*/
-
-	/**
-	 * Getter for color
-	 * 
-	 * @return color of the player (black cpu, white user)
-	 */
-	/*public Color getColor() {
-		return color;
-	}*/
 }
