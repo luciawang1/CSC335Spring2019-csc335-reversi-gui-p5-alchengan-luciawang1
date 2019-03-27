@@ -21,35 +21,4 @@ public class ReversiBoard implements Serializable {
 	public int getAt(int row, int col) {
 		return board[row][col];
 	}
-<<<<<<< HEAD
 }
-=======
-
-	/**
-	 * Getter for row
-	 * 
-	 * @return row
-	 */
-	/*public int getRow() {
-		return row;
-	}*/
-
-	/**
-	 * Getter for column
-	 * 
-	 * @return column
-	 */
-	/*public int getCol() {
-		return col;
-	}*/
-
-	/**
-	 * Getter for color
-	 * 
-	 * @return color of the player (black cpu, white user)
-	 */
-	/*public Color getColor() {
-		return color;
-	}*/
-}
->>>>>>> branch 'master' of https://github.com/CSC335Spring2019/csc335-reversi-gui-p5-alchengan-luciawang1.git
