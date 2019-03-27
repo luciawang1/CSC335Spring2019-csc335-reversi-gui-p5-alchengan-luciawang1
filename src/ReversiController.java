@@ -1,21 +1,20 @@
 import java.io.*;
-
 import javafx.scene.paint.Color;
 
 /**
+ * @author Lucia Wang, Alan Cheng
+ * 
  *         In MVC: Controller handles how the game works, such as if the move is
  *         valid or not, if the game is over or not, and the scores
- *         
- * @author Lucia Wang, Alan Cheng
  * 
  */
 public class ReversiController {
 
 	public ReversiModel model;
-	public int bScore;
-	public int wScore;
-	String[][] board;
-	int dimension;
+	public int bScore; // score of "B"
+	public int wScore; // score of "W"
+	String[][] board; // string representation of board
+	int dimension; // 8 by 8 board
 	FileInputStream load;
 
 	/**
@@ -31,27 +30,29 @@ public class ReversiController {
 			this.model = new ReversiModel(b);
 			in.close();
 			load.close();
-		} catch(FileNotFoundException fnfe) {
+		} catch (FileNotFoundException fnfe) {
 			this.model = new ReversiModel();
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			return;
-		} catch(ClassNotFoundException cnfe) {
+		} catch (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
 			return;
 		}
-		
+
+		// String representation of the board
 		this.board = model.getStringBoard();
 		this.dimension = model.getDimension();
+
+		// initial score is 2:2
 		bScore = 2;
 		wScore = 2;
-
 	}
-	
+
 	public ReversiModel getModel() {
 		return model;
 	}
-	
+
 	public void resetBoard() {
 		board = model.getStringBoard();
 	}
@@ -77,7 +78,7 @@ public class ReversiController {
 	/**
 	 * Returns score of W(white)
 	 * 
-	 * @return int score
+	 * @return score of W
 	 */
 	public int getWScore() {
 		wScore = 0;
@@ -88,13 +89,12 @@ public class ReversiController {
 			}
 		}
 		return wScore;
-
 	}
 
 	/**
-	 * Returns the number of squares occupied by b
+	 * Returns the score of B(black)
 	 * 
-	 * @return int score
+	 * @return score of W
 	 */
 	public int getBScore() {
 		bScore = 0;
@@ -136,31 +136,27 @@ public class ReversiController {
 	 * @return true if there are no more empty pieces; false if there are no more
 	 */
 	public boolean gameOver() {
-
 		boolean emptySpace = false;
-
 		for (int i = 0; i < ReversiBoard.DIM; i++) {
 			for (int j = 0; j < ReversiBoard.DIM; j++) {
 				if (board[i][j] == "_")
 					emptySpace = true;
 			}
 		}
-
+		// board is full
 		if (!emptySpace)
 			return true;
 
 		boolean validMove = false;
-
 		for (int i = 0; i < ReversiBoard.DIM; i++) {
 			for (int j = 0; j < ReversiBoard.DIM; j++) {
 				if (checkValid(i, j, "W", false) || checkValid(i, j, "B", false))
 					validMove = true;
 			}
 		}
-
+		// no valid moves
 		if (!validMove)
 			return true;
-
 		return false;
 	}
 
@@ -249,5 +245,4 @@ public class ReversiController {
 		}
 		return false;
 	}
-
 }

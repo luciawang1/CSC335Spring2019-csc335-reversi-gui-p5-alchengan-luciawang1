@@ -1,9 +1,10 @@
 import javafx.application.Application;
 
 /**
- *         Reversi contains the main method for the reversi game to run.
- *         
  * @author Lucia Wang, Alan Cheng
+ * 
+ *         Reversi contains the main method for the reversi game to run.
+ * 
  */
 public class Reversi {
 
