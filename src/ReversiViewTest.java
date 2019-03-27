@@ -23,6 +23,9 @@ class ReversiViewTest {
 		assertEquals(c.getWScore(), 1);
 		assertEquals(c.getBScore(), 4);
 		
+		assertTrue(c.hasValidMoves("W"));
+		assertTrue(c.hasValidMoves("B"));
+		
 		assertTrue(c.checkValid(2, 2, "W", true));
 		c.move(2, 2, "W");
 		assertTrue(c.checkValid(2, 3, "B", true));
@@ -31,6 +34,8 @@ class ReversiViewTest {
 		c.move(4, 2, "W");
 		assertTrue(c.checkValid(2, 4, "W", true));
 		c.move(2, 4, "W");
+		
+		assertFalse(c.hasValidMoves("B"));
 		
 		assertTrue(c.gameOver());
 		
