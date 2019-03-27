@@ -3,8 +3,13 @@ import java.io.*;
 import javafx.scene.paint.Color;
 
 /**
- * In MVC: Controller handles how the game works, such as if the move is valid
- * or not, if the game is over or not, and the scores
+ * <<<<<<< HEAD In MVC: Controller handles how the game works, such as if the
+ * move is valid or not, if the game is over or not, and the scores
+ * 
+ * ======= In MVC: Controller handles how the game works, such as if the move is
+ * valid or not, if the game is over or not, and the scores
+ * 
+ * >>>>>>> 1b159f6c7d31d6cf0eb10c831109d39045e0b337
  * 
  * @author Lucia Wang, Alan Cheng
  * 

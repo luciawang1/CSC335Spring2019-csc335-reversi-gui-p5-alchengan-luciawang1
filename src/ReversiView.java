@@ -7,8 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -20,11 +18,19 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * In MVC: View represents the actual play of the game, such as switching
- * between 2 players and keeping track of whether the game is over or not
+ * <<<<<<< HEAD In MVC: View represents the actual play of the game, such as
+ * switching between 2 players and keeping track of whether the game is over or
+ * not
  * 
  * @author Lucia Wang, Alan Cheng
  * 
+ *         ======= In MVC: View represents the actual play of the game, such as
+ *         switching between 2 players and keeping track of whether the game is
+ *         over or not
+ * 
+ * @author Lucia Wang, Alan Cheng
+ * 
+ *         >>>>>>> 1b159f6c7d31d6cf0eb10c831109d39045e0b337
  */
 public class ReversiView extends javafx.application.Application implements java.util.Observer {
 
@@ -89,7 +95,6 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	private void reset(Canvas board, Stage stage, Label label) {
-		// controller.model.addObserver(this);
 		// set background green
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, rowPixels, colPixels);
@@ -128,11 +133,7 @@ public class ReversiView extends javafx.application.Application implements java.
 				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
-
 		score.setText(scoreString());
-
-		// play(board, score, stage, label);
-
 	}
 
 	// given the row/col, calculate pixel location
@@ -159,7 +160,6 @@ public class ReversiView extends javafx.application.Application implements java.
 
 				// play
 				String turn = "W";
-				boolean wValid = false;
 				boolean bValid = false;
 				int row = 0;
 				int col = 0;
@@ -225,17 +225,10 @@ public class ReversiView extends javafx.application.Application implements java.
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
 				try {
 					File file = new File("save_game.dat");
 					file.delete();
-					// start(new Stage());
-
-					// controller.model.setBoard(0, 0, Color.TRANSPARENT);
-
-					// launch();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				newGame();
@@ -266,7 +259,6 @@ public class ReversiView extends javafx.application.Application implements java.
 				gc.fillOval(this.getPixels(i), this.getPixels(j), 40, 40);
 			}
 		}
-
 		score.setText(scoreString());
 	}
 
