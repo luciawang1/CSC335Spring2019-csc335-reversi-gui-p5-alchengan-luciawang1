@@ -7,8 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -42,7 +40,8 @@ public class ReversiView extends javafx.application.Application implements java.
 	private int colPixels = 384;
 
 	/**
-	 * Constructs ReversiView object with new Controller whos model is an observer
+	 * Constructs ReversiView object with new Controller whos model is an observer.
+	 * ReversiView needs a no-parameter constructor in order to launch
 	 * 
 	 * @param ReversiModel model
 	 */
@@ -70,16 +69,10 @@ public class ReversiView extends javafx.application.Application implements java.
 		MenuItem newGame = new CustomMenuItem(label);
 		menuFile.getItems().add(newGame);
 		menuBar.getMenus().add(menuFile);
-
-		// score on bottom
-		score = new Label(scoreString());
-
-		// Canvas board is the actual play area
-		Canvas board = new Canvas(rowPixels, colPixels);
+		score = new Label(scoreString()); // score on bottom
+		Canvas board = new Canvas(rowPixels, colPixels); // game board
 		gc = board.getGraphicsContext2D();
-
-		// resets game, score becomes 2:2
-		reset(board, stage, label);
+		reset(board, stage, label); // reset canvas
 
 		// lets user move
 		play(board, stage, label);
@@ -95,7 +88,6 @@ public class ReversiView extends javafx.application.Application implements java.
 		Scene scene = new Scene(group);
 		stage.setScene(scene);
 		stage.show();
-
 	}
 
 	/**
@@ -130,7 +122,7 @@ public class ReversiView extends javafx.application.Application implements java.
 			}
 		}
 
-		// encapsulate the board independent of the Model
+		// ReversiBoard independent of model
 		ReversiBoard rb = controller.getModel().getBoard();
 		// set colors based on the board
 		for (int i = 0; i < ReversiBoard.DIM; i++) {
@@ -190,14 +182,12 @@ public class ReversiView extends javafx.application.Application implements java.
 			 * @param: mouse click
 			 */
 			public void handle(MouseEvent mouse) {
-				// return if no one has any valid moves
-				if (!controller.hasValidMoves("W") && !controller.hasValidMoves("B")) { // return if game over
+				if (controller.gameOver()) { // return if game over
 					gameOver(board, stage, label);
 					return;
 				}
 
 				String turn = "W";
-				boolean wValid = false;
 				boolean bValid = false;
 				int row = 0;
 				int col = 0;
@@ -232,7 +222,7 @@ public class ReversiView extends javafx.application.Application implements java.
 					controller.move(row, col, turn);
 				}
 				score.setText(scoreString());
-				if (!controller.hasValidMoves("W") && !controller.hasValidMoves("B")) { // return if game over
+				if (controller.gameOver()) { // return if game over
 					gameOver(board, stage, label);
 					return;
 				}
