@@ -22,7 +22,8 @@ import javafx.stage.WindowEvent;
  * @author Alan Cheng
  * 
  *         ReversiView Creates Reversi GUI with JavaFX to allow users to
- *         interact with the board
+ *         interact with the board. Implements Observer interface so that
+ *         changing the model can also change the view
  */
 public class ReversiView extends javafx.application.Application implements java.util.Observer {
 
@@ -42,7 +43,7 @@ public class ReversiView extends javafx.application.Application implements java.
 	private GraphicsContext gc;
 
 	/**
-	 * Display the score
+	 * Label to display score
 	 */
 	private Label score;
 
@@ -176,10 +177,11 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * Starts the game, user goes first. Validates the user's move and updates the
-	 * board when a valid move has been made. Alternates turns with CPU, who moves
-	 * randomly. Updates score, and terminates game when neither cpu nor user has
-	 * any valid moves
+	 * Handle user mouse clicks
+	 * 
+	 * Validates the user's move and updates the board when a valid move has been
+	 * made. Alternates turns with CPU, who moves randomly. Updates score, and
+	 * terminates game when neither CPU nor user has any valid moves
 	 * 
 	 * @param board Canvas object to handle user mouse click events and update GUI
 	 * @param stage Stage to display GUI
@@ -196,6 +198,8 @@ public class ReversiView extends javafx.application.Application implements java.
 			 * ReversiBoard object if move is valid; keeps track of user/CPU turn, updates
 			 * score every turn
 			 * 
+			 * If the user clicks a square that is not legal, it is ignored
+			 * 
 			 * @param: mouse click MouseEvent
 			 */
 			public void handle(MouseEvent mouse) {
@@ -210,10 +214,11 @@ public class ReversiView extends javafx.application.Application implements java.
 
 				// user
 				if (turn == "W" && controller.hasValidMoves("W")) {
-					// keep letting the user click until the move is legal
+					// get x and y coordinate of click event and turn it into row and column
 					row = getRowCol(mouse.getX());
 					col = getRowCol(mouse.getY());
 					if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+						// call controller to make desired move
 						if (controller.checkValid(row, col, turn, false)) {
 							controller.checkValid(row, col, turn, true);
 							controller.move(row, col, turn);
@@ -300,7 +305,8 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * Updates view if changes have been made to model
+	 * Updates view if changes have been made to model by switching appropriate
+	 * circles to white and black
 	 * 
 	 * @param model  Model that indicates whether changes have been made
 	 * @param oBoard ReversiBoard object that contains the most recent move's col,
@@ -358,6 +364,7 @@ public class ReversiView extends javafx.application.Application implements java.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// starts new game after user acknowledges game over (no further moves allowed)
 		newGame();
 		reset(board, stage, label);
 		update(controller.model, controller.model.getBoard());
