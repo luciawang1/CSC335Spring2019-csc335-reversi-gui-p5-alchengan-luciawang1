@@ -18,30 +18,44 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * @author Lucia Wang, Alan Cheng
+ * @author Lucia Wang
+ * @author Alan Cheng
  * 
- *         ReversiView uses JavaFX to create a graphical user interface for
- *         Reversi
+ *         ReversiView Creates Reversi GUI with JavaFX to allow users to
+ *         interact with the board
  */
 public class ReversiView extends javafx.application.Application implements java.util.Observer {
 
-	// handle user input and cpu
+	/**
+	 * ReversiController to allow view to communicate changes to model
+	 */
 	public ReversiController controller;
 
-	// 8 by 8 board in this case
+	/**
+	 * Number of rows/columns
+	 */
 	public int dimension = 8;
 
-	// graphics context to draw board
+	/**
+	 * Graphics context to draw board
+	 */
 	private GraphicsContext gc;
+
+	/**
+	 * Display the score
+	 */
 	private Label score;
 
-	// 8 rows, pieces have 20px radius, 2px insets, border is 2px, edge is 8px
+	/**
+	 * 8 rows, pieces have 20px radius, 2px insets, border is 2px, edge is 8px
+	 */
 	private int rowPixels = 384;
 	private int colPixels = 384;
 
 	/**
-	 * Constructs ReversiView object with new Controller whos model is an observer.
-	 * ReversiView needs a no-parameter constructor in order to launch
+	 * Constructs ReversiView object with new ReversiController object whose model
+	 * is an observer. ReversiView needs a no-parameter constructor in order to
+	 * launch
 	 * 
 	 * @param ReversiModel model
 	 */
@@ -54,7 +68,7 @@ public class ReversiView extends javafx.application.Application implements java.
 	 * Generages GUI for Reversi game, allows user to interact with the board
 	 * through clicks on the tiles
 	 * 
-	 * @param stage displays GUI
+	 * @param stage Stage to display GUI
 	 */
 	@Override
 	public void start(Stage stage) {
@@ -91,12 +105,13 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * resets visuals of the board (green background, black and white pieces in the
-	 * middle set up, black lines to separate squares)
+	 * Resets visuals of the board (green background, black and white circle pieces
+	 * in the middle, transparent circle pieces everywhere else, black lines to
+	 * separate squares)
 	 * 
-	 * @param board: the canvas we are drawing on
-	 * @param stage: displays the canvas
-	 * @param label: new game label
+	 * @param board Canvas displays and updates board
+	 * @param stage Stage displays the canvas
+	 * @param label Label to show score
 	 */
 	private void reset(Canvas board, Stage stage, Label label) {
 		// set background green
@@ -141,20 +156,20 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * given the row/col, calculate pixel location
+	 * Given the row/col, calculate pixel location
 	 * 
-	 * @param i, the row/col we want the pixels of
-	 * @return the corresponding pixels
+	 * @param i Row/Col we want the pixels of
+	 * @return corresponding pixels
 	 */
 	private int getPixels(int i) {
 		return 12 + 46 * i;
 	}
 
 	/**
-	 * given pixel, determine col/row
+	 * Given pixel, determine col/row
 	 * 
-	 * @param pixel, the pixels on the board
-	 * @return the row/col it corresponds to
+	 * @param pixel Pixels on the canvas
+	 * @return Row/Col of pixel
 	 */
 	private int getRowCol(double pixel) {
 		return (int) (pixel - 9) / 46;
@@ -166,9 +181,9 @@ public class ReversiView extends javafx.application.Application implements java.
 	 * randomly. Updates score, and terminates game when neither cpu nor user has
 	 * any valid moves
 	 * 
-	 * @param board: handles user mouse click events, updates GUI
-	 * @param stage: displays GUI
-	 * @param label: handles clicks on "New Game" menu item
+	 * @param board Canvas object to handle user mouse click events and update GUI
+	 * @param stage Stage to display GUI
+	 * @param label Label to show score
 	 */
 	private void play(Canvas board, Stage stage, Label label) {
 
@@ -177,16 +192,17 @@ public class ReversiView extends javafx.application.Application implements java.
 
 			@Override
 			/**
-			 * Determines if click is valid, updates board if valid
+			 * Determine if move at Mouse Click Location is valid, update view/model through
+			 * ReversiBoard object if move is valid; keeps track of user/CPU turn, updates
+			 * score every turn
 			 * 
-			 * @param: mouse click
+			 * @param: mouse click MouseEvent
 			 */
 			public void handle(MouseEvent mouse) {
 				if (controller.gameOver()) { // return if game over
 					gameOver(board, stage, label);
 					return;
 				}
-
 				String turn = "W";
 				boolean bValid = false;
 				int row = 0;
@@ -233,8 +249,10 @@ public class ReversiView extends javafx.application.Application implements java.
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			/**
-			 * handles WindowClosing event and saves the current game to "save_game.dat" by
+			 * Handles WindowClosing event and saves the current game to "save_game.dat" by
 			 * writing out the serialized ReversiBoard class
+			 * 
+			 * @param wc WindowEvent
 			 */
 			public void handle(WindowEvent wc) {
 				try {
@@ -255,8 +273,8 @@ public class ReversiView extends javafx.application.Application implements java.
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			/**
-			 * Start a new game: construct a new model, update the view, delete the
-			 * save_game.dat file if it exists
+			 * Starts a new game with a new model, resets view, deletes the save_game.dat
+			 * file if it exists
 			 */
 			public void handle(MouseEvent event) {
 				try {
@@ -273,7 +291,7 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * Create a new model, make it an observer, resets ReversiBoard object
+	 * Creates new model, adds view as observer, resets ReversiBoard object
 	 */
 	private void newGame() {
 		controller.model = new ReversiModel();
@@ -305,7 +323,7 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * Builds a string object to represent the score
+	 * Builds a string object to display the score underneath the board
 	 * 
 	 * @return scoreSB StringBuilder that contains the score
 	 */
@@ -320,9 +338,8 @@ public class ReversiView extends javafx.application.Application implements java.
 	}
 
 	/**
-	 * Handles game over situation
-	 * 
-	 * Determines win/lose/tie, deletes "save_game.dat", starts a new game
+	 * Determines win/lose/tie, display info through Alert, starts a new game when
+	 * user acknowledges Alert by deleting "save_game.dat"
 	 * 
 	 * @param board Canvas for Reversi
 	 * @param stage Stage to display GUI

@@ -2,27 +2,50 @@ import java.io.*;
 import javafx.scene.paint.Color;
 
 /**
- * @author Lucia Wang, Alan Cheng
+ * @author Lucia Wang
+ * @author Alan Cheng
  * 
- *         In MVC: Controller handles how the game works, such as if the move is
- *         valid or not, if the game is over or not, and the scores
- * 
+ *         ReversiController validates player moves, communicates with model to
+ *         make them.
  */
 public class ReversiController {
-
+	/**
+	 * model to store pieces on the board
+	 */
 	public ReversiModel model;
-	public int bScore; // score of "B"
-	public int wScore; // score of "W"
-	String[][] board; // string representation of board
-	int dimension; // 8 by 8 board
+
+	/**
+	 * score of B
+	 */
+	public int bScore;
+
+	/**
+	 * score of W
+	 */
+	public int wScore;
+
+	/**
+	 * String version of board, "B" = black, "W" = white, "_" = empty
+	 */
+	String[][] board;
+
+	/**
+	 * dimensions of board
+	 */
+	int dimension;
+
+	/**
+	 * load saved file if it exists
+	 */
 	FileInputStream load;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param ReversiModel model
+	 * Constructs ReversiModel object. If a file named "save_game.dat" exists, load
+	 * it into the model and show it in the view, if it doesn't, make a new
+	 * ReversiModel for a new game
 	 */
 	public ReversiController() {
+		// if "save_game.dat" exists, load into model, and show in view
 		try {
 			load = new FileInputStream("save_game.dat");
 			ObjectInputStream in = new ObjectInputStream(load);
@@ -30,6 +53,7 @@ public class ReversiController {
 			this.model = new ReversiModel(b);
 			in.close();
 			load.close();
+			// no saved file, construct new ReversiModel
 		} catch (FileNotFoundException fnfe) {
 			this.model = new ReversiModel();
 		} catch (IOException ioe) {
@@ -40,45 +64,33 @@ public class ReversiController {
 			return;
 		}
 
-		// String representation of the board
+		// Instantiate instance variables
 		this.board = model.getStringBoard();
 		this.dimension = model.getDimension();
-
-		// initial score is 2:2
-		bScore = 2;
-		wScore = 2;
+		this.bScore = 2;
+		this.wScore = 2;
 	}
 
+	/**
+	 * getter for ReversiModel object
+	 * 
+	 * @return model
+	 */
 	public ReversiModel getModel() {
 		return model;
 	}
 
+	/**
+	 * Resets the controller's board to the model's, used to create a new game
+	 */
 	public void resetBoard() {
 		board = model.getStringBoard();
 	}
 
 	/**
-	 * Returns physical representation of board as String
+	 * Calculate score of W
 	 * 
-	 * @return String board
-	 */
-	public String toString() {
-		String s = "";
-		for (int i = 0; i < board.length; i++) {
-			s += (i + 1) + " ";
-			for (int j = 0; j < board.length; j++) {
-				s += board[i][j] + " ";
-			}
-			s += "\n";
-		}
-		s += "  a b c d e f g h";
-		return s;
-	}
-
-	/**
-	 * Returns score of W(white)
-	 * 
-	 * @return score of W
+	 * @return wScore Score of W
 	 */
 	public int getWScore() {
 		wScore = 0;
@@ -92,9 +104,9 @@ public class ReversiController {
 	}
 
 	/**
-	 * Returns the score of B(black)
+	 * Calculate score of B
 	 * 
-	 * @return score of W
+	 * @return bScore Score of B
 	 */
 	public int getBScore() {
 		bScore = 0;
@@ -108,19 +120,11 @@ public class ReversiController {
 	}
 
 	/**
-	 * prints out the current score
-	 */
-	public void printScore() {
-		System.out.println();
-		System.out.println("The score is " + getWScore() + ":" + getBScore() + ".");
-	}
-
-	/**
-	 * puts the piece for the player at the specified row and col on the board
+	 * Puts the right piece at specified row/col for specified player
 	 * 
-	 * @param col: int, represents column
-	 * @param row: int, represents row
-	 * @param player: String, "W" or "B"
+	 * @param col    Column of move
+	 * @param row    Row of move
+	 * @param player W or B
 	 */
 	public void move(int row, int col, String player) {
 		if (player == "W")
@@ -131,9 +135,12 @@ public class ReversiController {
 	}
 
 	/**
-	 * determines if the game is over based on if there are anymore empty spaces
+	 * Determines if game is over
 	 * 
-	 * @return true if there are no more empty pieces; false if there are no more
+	 * Game is over if there are no more empty spaces, or if there are no more valid
+	 * moves
+	 * 
+	 * @return true if game is over; false if there are more valid moves
 	 */
 	public boolean gameOver() {
 		boolean emptySpace = false;
@@ -161,14 +168,15 @@ public class ReversiController {
 	}
 
 	/**
-	 * determines if the move at row, col for the specified player is valid
+	 * Determines if the move at row, col for specified player is valid
 	 * 
-	 * @param row: int, the row that the player wants to put their piece at
-	 * @param col: int, the column that the player wants to put their piece at
-	 * @param player: String, "B" or "W"
-	 * @param actuallyMove: boolean, true if you actually want to move the piece, or
-	 *        false if you're just trying to check if the move is valid or not
-	 *        without actually moving
+	 * @param row    Row the player wants to move to
+	 * @param col    Column the player wants to move to
+	 * @param player "B" or "W"
+	 * @param        actuallyMove: true if you're actually trying to move the piece,
+	 *               false if you're just trying to check if the move is valid
+	 *               without moving anything
+	 * @return isValid true if the move is valid, false otherwise
 	 */
 	public boolean checkValid(int row, int col, String player, boolean actuallyMove) {
 		boolean isValid = false;
@@ -176,7 +184,6 @@ public class ReversiController {
 			return false;
 		for (int dX = -1; dX < 2; dX++) {
 			for (int dY = -1; dY < 2; dY++) {
-
 				// continue if it is checking itself
 				if (dX == 0 && dY == 0) {
 					continue;
@@ -232,8 +239,8 @@ public class ReversiController {
 	/**
 	 * checks to see if the player has valid moves
 	 * 
-	 * @param player
-	 * @return
+	 * @param player "W" or "B"
+	 * @return true if player has valid moves, false otherwise
 	 */
 	public boolean hasValidMoves(String player) {
 		for (int i = 0; i < dimension; i++) {
